@@ -56,6 +56,7 @@ export class NodeModel<T extends NodeModelListener = NodeModelListener> extends 
 		if (this.isSelected()) {
 			_.forEach(this.ports, port => {
 				entities = entities.concat(
+					// @ts-ignore
 					_.map(port.getLinks(), link => {
 						return link.getPointForPort(port);
 					})
