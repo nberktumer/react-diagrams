@@ -438,6 +438,10 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 					if (this.props.allowCanvasZoom) {
 						event.preventDefault()
 						event.stopPropagation()
+						if (document.activeElement !== document.body) {
+							return
+						}
+
 						const oldZoomFactor = diagramModel.getZoomLevel() / 100
 						let scrollDelta = this.props.inverseZoom ? -event.deltaY : event.deltaY
 						//check if it is pinch gesture
@@ -446,9 +450,9 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
                 have fractional part, also `ctrlKey` prop of the event is true
                 though ctrl isn't pressed
               */
-							scrollDelta /= 3
+							scrollDelta /= 2
 						} else {
-							scrollDelta /= 60
+							scrollDelta /= 30
 						}
 						if (diagramModel.getZoomLevel() + scrollDelta > 10) {
 							diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta)
@@ -480,7 +484,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 					}
 				}}
 				onMouseDown={event => {
-					if (event.nativeEvent.which === 3) return
+					if (event.nativeEvent.which === 3) { return }
 					this.setState({...this.state, wasMoved: false})
 
 					diagramEngine.clearRepaintEntities()
